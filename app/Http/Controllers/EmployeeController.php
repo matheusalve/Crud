@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class EmployeeController extends Controller
-{
-    public function index()
-    {
-        $employees = Employee::all();
-        return view('employees.index', compact('employees'));
-    }
+class EmployeeController extends Controller {
 
-   // handle fetch all eamployees ajax request
+	// set index page view
+	public function index() {
+		return view('home');
+	}
+
+	// handle fetch all eamployees ajax request
 	public function fetchAll() {
 		$emps = Employee::all();
 		$output = '';

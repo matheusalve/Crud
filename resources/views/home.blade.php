@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Gerenciador de funcionários') }}</div>
 
   
 <!DOCTYPE html>
@@ -16,12 +11,120 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerenciador de Funcionários</title>
+  <title>Employer manager</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css' />
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
+  <link rel='stylesheet'
+    href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
 
 </head>
+{{-- add new employee modal start --}}
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Adicionar Funcionário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="#" method="POST" id="add_employee_form" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body p-4 bg-light">
+          <div class="row">
+            <div class="col-lg">
+              <label for="fname">Nome</label>
+              <input type="text" name="fname" class="form-control" placeholder="Insira seu nome" required>
+            </div>
+            <div class="col-lg">
+              <label for="lname">Sobrenome</label>
+              <input type="text" name="lname" class="form-control" placeholder="Insira seu sobrenome" required>
+            </div>
+          </div>
+          <div class="my-2">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" class="form-control" placeholder="insira seu e-mail" required>
+          </div>
+          <div class="my-2">
+            <label for="phone">Telefone</label>
+            <input type="tel" name="phone" class="form-control" placeholder="Insira seu número de telefone" required>
+          </div>
+            <div class="my-2">
+              <label for="post">Post</label>
+              <input type="text" name="post" class="form-control" placeholder="Insira alguma obsercação" required>
+            </div>
+          <div class="my-2">
+            <label for="avatar">Selecione um avatar</label>
+            <input type="file" name="avatar" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" id="add_employee_btn" class="btn btn-primary">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{-- add new employee modal end --}}
+
+
+
+
+{{-- edit employee modal start --}}
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar funcionário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="#" method="POST" id="edit_employee_form" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="emp_id" id="emp_id">
+        <input type="hidden" name="emp_avatar" id="emp_avatar">
+        <div class="modal-body p-4 bg-light">
+          <div class="row">
+            <div class="col-lg">
+              <label for="fname">Nome</label>
+              <input type="text" name="fname" id="fname" class="form-control" placeholder="Insira seu nome" required>
+            </div>
+            <div class="col-lg">
+              <label for="lname">Sobrenome</label>
+              <input type="text" name="lname" id="lname" class="form-control" placeholder="Insira seu sobrenome" required>
+            </div>
+          </div>
+          <div class="my-2">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="Insira seu e-mail" required>
+          </div>
+          <div class="my-2">
+            <label for="phone">Telefone</label>
+            <input type="tel" name="phone" id="phone" class="form-control" placeholder="Insira seu telefone" required>
+          </div>
+          <div class="my-2">
+            <label for="post">Post</label>
+            <input type="text" name="post" id="post" class="form-control" placeholder="Insira alguma observação" required>
+          </div>
+          <div class="my-2">
+            <label for="avatar">Selecione um avatar</label>
+            <input type="file" name="avatar" class="form-control">
+          </div>
+          <div class="mt-2" id="avatar">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" id="edit_employee_btn" class="btn btn-success">Atualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{-- edit employee modal end --}}
+
+
 
 <body class="bg-light">
   <div class="container">
@@ -29,8 +132,9 @@
       <div class="col-lg-12">
         <div class="card shadow">
           <div class="card-header bg-danger d-flex justify-content-between align-items-center">
-            <h3 class="text-light">Gerenciador de Funcionários</h3>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"><i class="bi-plus-circle me-2"></i>Adicionar funcionário</button>
+            <h3 class="text-light">Gerenciador de funcionários</h3>
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"><i
+                class="bi-plus-circle me-2"></i>Adicionar funcionario</button>
           </div>
           <div class="card-body" id="show_all_employees">
             <h1 class="text-center text-secondary my-5">Procurando...</h1>
@@ -39,21 +143,12 @@
       </div>
     </div>
   </div>
-                    
-                </body>
-                </html>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+</body>
 
-                    {{ __('Bem vindo') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</html>
 @endsection
