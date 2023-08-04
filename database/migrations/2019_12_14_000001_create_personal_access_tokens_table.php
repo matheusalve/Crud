@@ -4,22 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonalAccessTokensTable extends Migration
-{
+class CreateEmployeesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
+    public function up() {
+        Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('post');
+            $table->string('avatar');
             $table->timestamps();
         });
     }
@@ -29,8 +28,7 @@ class CreatePersonalAccessTokensTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('personal_access_tokens');
+    public function down() {
+        Schema::dropIfExists('employees');
     }
 }

@@ -137,11 +137,13 @@
       </div>
     </div>
   </div>
-
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>   <!--  esse da problema -->
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     $(function() {
 
-        
       // add new employee ajax request
       $("#add_employee_form").submit(function(e) {
         e.preventDefault();
@@ -158,8 +160,8 @@
           success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Adicionado!',
-                'Funcionário adicionado com sucesso!',
+                'Added!',
+                'Employee Added Successfully!',
                 'success'
               )
               fetchAllEmployees();
@@ -212,8 +214,8 @@
           success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Atualizado!',
-                'Informações atualizadas com sucesso!',
+                'Updated!',
+                'Employee Updated Successfully!',
                 'success'
               )
               fetchAllEmployees();
@@ -231,13 +233,13 @@
         let id = $(this).attr('id');
         let csrf = '{{ csrf_token() }}';
         Swal.fire({
-          title: 'Você tem certeza??',
-          text: "Você não será capaz de reverter isso!",
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Sim, deletar'
+          confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
@@ -278,7 +280,7 @@
       }
     });
   </script>
-
+</body>
 
 
 
