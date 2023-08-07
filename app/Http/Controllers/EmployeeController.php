@@ -23,11 +23,11 @@ class EmployeeController extends Controller {
               <tr>
                 <th>ID</th>
                 <th>Avatar</th>
-                <th>Name</th>
+                <th>Nome</th>
                 <th>E-mail</th>
                 <th>Post</th>
-                <th>Phone</th>
-                <th>Action</th>
+                <th>Telefone</th>
+                <th>Ação</th>
               </tr>
             </thead>
             <tbody>';

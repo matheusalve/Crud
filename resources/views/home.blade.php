@@ -143,6 +143,7 @@
   <script>
     $(function() {
 
+        
       // add new employee ajax request
       $("#add_employee_form").submit(function(e) {
         e.preventDefault();
@@ -159,13 +160,13 @@
           success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Added!',
-                'Employee Added Successfully!',
+                'Adicionado!',
+                'Funcionário adicionado com sucesso!',
                 'success'
               )
               fetchAllEmployees();
             }
-            $("#add_employee_btn").text('Add Employee');
+            $("#add_employee_btn").text('Adicionar Funcionário');
             $("#add_employee_form")[0].reset();
             $("#addEmployeeModal").modal('hide');
           }
@@ -213,8 +214,8 @@
           success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Updated!',
-                'Employee Updated Successfully!',
+                'Atualizado!',
+                'Informações atualizadas com sucesso!',
                 'success'
               )
               fetchAllEmployees();
@@ -232,13 +233,13 @@
         let id = $(this).attr('id');
         let csrf = '{{ csrf_token() }}';
         Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
+          title: 'Você tem certeza??',
+          text: "Você não será capaz de reverter isso!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
+          confirmButtonText: 'Sim, deletar'
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
@@ -251,8 +252,8 @@
               success: function(response) {
                 console.log(response);
                 Swal.fire(
-                  'Deleted!',
-                  'Your file has been deleted.',
+                  'Deletado!',
+                  'A ficha do seu funcionário foi deletada',
                   'success'
                 )
                 fetchAllEmployees();
